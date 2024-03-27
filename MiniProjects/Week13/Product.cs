@@ -17,7 +17,7 @@ class Products
     public string ProductName { get; set; }
     public double Price { get; set; }
 
-    public override string ToString()
+    public override string ToString() // is called implicityly on any Object
     {
         CultureInfo swedish = new CultureInfo("sv-SE");
         return $"{Category.PadRight(15)}{ProductName.PadRight(15)}{Price.ToString("C", swedish).PadRight(15)}";
