@@ -13,28 +13,43 @@ namespace MiniProjects.Week13
 
         public void AddProduct(string category, string productName, double price) 
         {
-            products.Add(new Products(category, productName, price));
+            try
+            {
+                products.Add(new Products(category, productName, price));
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine($"An error occurred while adding products: {ex.Message}");
+            }
         }
 
         public void DisplayProducts()
         {
-            var sortedProducts = products.OrderBy(p => p.Category).ToList();
-            double totalPrice = sortedProducts.Sum(p => p.Price);
-
-            int lineLength = 15 + 15 + 15 + 10;
-            Console.WriteLine("\n" + new string('-', lineLength));
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"{"Category".PadRight(15)}{"Product".PadRight(15)}{"Price".PadRight(15)}");
-            Console.ResetColor();
-            Console.WriteLine(new string('-', lineLength));
-
-            foreach (Products product in sortedProducts)  
+            try
             {
-                Console.WriteLine(product);
-            }
+                var sortedProducts = products.OrderBy(p => p.Price).ToList();
+                double totalPrice = sortedProducts.Sum(p => p.Price);
 
-            Console.WriteLine(new string('-', lineLength));
-            Console.WriteLine($"{"Total: ".PadRight(30)}{totalPrice.ToString("C", new CultureInfo("sv-SE"))}");
+                int lineLength = 15 + 15 + 15 + 10;
+                Console.WriteLine("\n" + new string('-', lineLength));
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"{"Category".PadRight(15)}{"Product".PadRight(15)}{"Price".PadRight(15)}");
+                Console.ResetColor();
+                Console.WriteLine(new string('-', lineLength));
+
+                foreach (Products product in sortedProducts)  
+                {
+                    Console.WriteLine(product);
+                }
+
+                Console.WriteLine(new string('-', lineLength));
+                Console.WriteLine($"{"Total: ".PadRight(30)}{totalPrice.ToString("C", new CultureInfo("sv-SE"))}");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while displaying products: {ex.Message}");
+            }
         }
     }
 }
