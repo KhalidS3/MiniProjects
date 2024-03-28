@@ -26,9 +26,20 @@ namespace MiniProjects.Week13
                         // Display products and total amount here.
                         manager.DisplayProducts();
                         // Final prompt after displaying products.
-                        Console.WriteLine("--------------------------------------------------------------------------");
+                        //Console.WriteLine("--------------------------------------------------------------------------");
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("To enter a new product - enter: \"P\" | To search for a product - enter: \"S\" | To quit - enter: \"Q\"");
-                        //PromptForCategoryAndAddProduct(manager);
+                        Console.ResetColor();
+                        break;
+                    case "S":
+                        // implemet search here
+                        Console.Write("Enter product name to search: ");
+                        string searchP = Console.ReadLine();
+                        manager.DisplayProducts(searchP, false);
+                        //Console.WriteLine("--------------------------------------------------------------------------");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("To enter a new product - enter: \"P\" | To search for a product - enter: \"S\" | To quit - enter: \"Q\"");
+                        Console.ResetColor();
                         break;
                     default:
                         Console.WriteLine("Invalid input. Please try again or enter: \"P\" | To search for a product - enter: \"S\" | To quit - enter: \"Q\".");
@@ -45,7 +56,9 @@ namespace MiniProjects.Week13
             if (category == "Q")
             {
                 manager.DisplayProducts();
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("To enter a new product - enter: \"P\" | To search for a product - enter: \"S\" | To quit - enter: \"Q\"");
+                Console.ResetColor();
                 return;
             }
             AddProduct(category, manager);
@@ -59,7 +72,9 @@ namespace MiniProjects.Week13
             if (productName.ToUpper() == "Q")
             {
                 manager.DisplayProducts();
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("To enter a new product - enter: \"P\" | To search for a product - enter: \"S\" | To quit - enter: \"Q\"");
+                Console.ResetColor();
                 return;
             }
 
