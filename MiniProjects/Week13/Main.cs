@@ -77,13 +77,19 @@ namespace MiniProjects.Week13
                 Console.ResetColor();
                 return;
             }
-
-            Console.Write("Enter a Price: ");
-            if (!double.TryParse(Console.ReadLine(), out double price))
+            double price;
+            while (true)
             {
+                Console.Write("Enter a Price: ");
+                if (double.TryParse(Console.ReadLine(), out price))
+                {
+                    break; // if valid, break out of loop
+                }
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Invalid input for price. Please input a valid number.");
-                return; // Return to prompt for category again.
+                Console.ResetColor();
             }
+            
 
             manager.AddProduct(category, productName, price);
             Console.ForegroundColor = ConsoleColor.Green;
