@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Week12\CheckPoint-1.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Week12\" />
+    <Compile Remove="Week12\**" />
+    <Compile Remove="Week13\**" />
+    <EmbeddedResource Remove="Week12\**" />
+    <EmbeddedResource Remove="Week13\**" />
+    <None Remove="Week12\**" />
+    <None Remove="Week13\**" />
   </ItemGroup>
 
 </Project>
