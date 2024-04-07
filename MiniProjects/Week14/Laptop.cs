@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiniProjects.Week14
+﻿namespace MiniProjects.Week14
 {
     internal class Laptop : Asset
     {
-        public Laptop(string modelName, DateTime purchaseDate, double price)
-            : base(modelName, purchaseDate, price)
+        public Laptop(string brand, string modelName, DateTimeOffset purchaseDate, double price, Office office)
         {
+            Brand = brand;
+            ModelName = modelName;
+            PurchaseDate = purchaseDate;
+            Price = price;
+            Office = office;
         }
   
     }

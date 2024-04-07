@@ -1,42 +1,128 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiniProjects.Week14
+﻿namespace MiniProjects.Week14
 {
     internal class AssetManager
     {
-        Laptop macBook = new Laptop("MacBook Pro", new DateTime(2019, 1, 2), 2000);
-        MobilePhone iPhone = new MobilePhone("iPhone 11", new DateTime(2020, 1, 2), 1000);
+        // Level 1
+        //Laptop macBook = new Laptop("MacBook Pro", new DateTime(2019, 1, 2), 2000);
+        //MobilePhone iPhone = new MobilePhone("iPhone 11", new DateTime(2020, 1, 2), 1000);
+        // level 2
+        private List<Asset> assets = new List<Asset>();
         public static void Main()
         {
             AssetManager manager = new AssetManager();
-            manager.DisplayAssets();
-            manager.CheckEndOfLife();
+            manager.CollectAssetsFromUser();
+            manager.DisplaySortedAssets();
         }
 
-        public void DisplayAssets()
+        public void CollectAssetsFromUser()
         {
-            Console.WriteLine("Laptop: ");
-            Console.WriteLine($"Model: {macBook.ModelName}");
-            Console.WriteLine($"Purchase Date: {macBook.PurchaseDate}");
-            Console.WriteLine($"Price: {macBook.Price}");
+            Console.WriteLine("Enter asset details (type 'laptop' or 'phone', model name, purchase date, price), or 'done' when finished.");
 
-            Console.WriteLine("\nMobile Phone: ");
-            Console.WriteLine($"Model: {iPhone.ModelName}");
-            Console.WriteLine($"Purchase Date: {iPhone.PurchaseDate}");
-            Console.WriteLine($"Price: {iPhone.Price}");
+            string userInput = "";
+
+            while (true)
+            {
+                Console.Write("What type of asset: ");
+                userInput = Console.ReadLine()?.Trim().ToLower() ?? string.Empty;
+
+                if (userInput == "done")
+                {
+                    break;
+                }
+
+                if (userInput != "laptop" && userInput != "phone")
+                {
+                    Console.WriteLine("Invalid asset type. Please enter 'laptop' or 'phone'.");
+                    continue;
+                }
+
+                string type = userInput;
+
+                string brand;
+                do
+                {
+                    Console.Write("Brand name: ");
+                    brand = Console.ReadLine()?.Trim() ?? string.Empty;
+                } while (string.IsNullOrEmpty(brand));
+
+                string modelName;
+                do
+                {
+                    Console.Write("Model name: ");
+                    modelName = Console.ReadLine()?.Trim() ?? string.Empty;
+                } while (string.IsNullOrEmpty(modelName));
+
+                DateTimeOffset purchaseDate;
+                do
+                {
+                    Console.Write("Purchase date (yyyy-MM-dd): ");
+                    userInput = Console.ReadLine()?.Trim() ?? string.Empty;
+                } while (!DateTimeOffset.TryParse(userInput, out purchaseDate));
+
+                double price;
+                do
+                {
+                    Console.Write("Price: ");
+                    userInput = Console.ReadLine()?.Trim() ?? string.Empty;
+                } while (!double.TryParse(userInput, out price));
+
+                string officeLocation;
+                do
+                {
+                    Console.Write("Office location: ");
+                    officeLocation = Console.ReadLine()?.Trim() ?? string.Empty;
+                } while (string.IsNullOrEmpty(officeLocation));
+
+                string currency;
+                do
+                {
+                    Console.Write("Currency: ");
+                    currency = Console.ReadLine()?.Trim().ToUpper() ?? string.Empty;
+                } while (string.IsNullOrEmpty(currency));
+
+                Office office = new Office(officeLocation, currency);
+
+                if (type == "laptop")
+                {
+                    assets.Add(new Laptop(brand, modelName, purchaseDate, price, office));
+                }
+                else if (type == "phone")
+                {
+                    assets.Add(new MobilePhone(brand, modelName, purchaseDate, price, office));
+                }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Asset added successfully!");
+                Console.ResetColor();
+            }
         }
-
-        public void CheckEndOfLife()
+        public void DisplaySortedAssets()
         {
-            Console.WriteLine("\nChecking if the assets are at their end of life...");
-            Console.WriteLine($"Laptop: {macBook.IsEndOfLife()}");
-            Console.WriteLine($"Mobile Phone: {iPhone.IsEndOfLife()}");
-        }
+            var sortedAssets = assets.OrderBy(a => a.GetType().Name).ThenBy(a => a.PurchaseDate).ToList();
 
-        // Main method
+            Console.WriteLine("Type".PadRight(15) + "Brand".PadRight(15) + "Model".PadRight(15) + "Office".PadRight(15) +
+                "Purchase Date".PadRight(20) + "Price in USD".PadRight(15) + "Currency".PadRight(10) + "Local price today");
+            Console.WriteLine(new string('-', 15) + new string('-', 15) + new string('-', 15) + new string('-', 15) +
+                new string('-', 20) + new string('-', 15) + new string('-', 10) + new string('-', 17));
+
+            foreach (var asset in sortedAssets)
+            {
+                // Determine if asset is near its end of life and set the console text color accordingly
+                var monthsToEnd = asset.MonthsToEndOfLife();
+                if (monthsToEnd <= 3)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else if (monthsToEnd <= 6)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else
+                {
+                    Console.ResetColor();
+                }
+                Console.WriteLine(asset);
+            }
+            Console.ResetColor();
+        }
     }
 }
